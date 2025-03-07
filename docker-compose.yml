@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  ai-hedge-fund:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    # コンテナ内のシェルを起動して対話的に操作できるようにする
+    stdin_open: true
+    tty: true
+    # ENTRYPOINTをクリアしてbashを実行
+    entrypoint: []
+    command: /bin/bash

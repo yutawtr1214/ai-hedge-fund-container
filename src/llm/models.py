@@ -12,6 +12,7 @@ class ModelProvider(str, Enum):
     OPENAI = "OpenAI"
     GROQ = "Groq"
     ANTHROPIC = "Anthropic"
+    GROK = "Grok"
 
 
 class LLMModel(BaseModel):
@@ -76,6 +77,11 @@ AVAILABLE_MODELS = [
         model_name="o3-mini",
         provider=ModelProvider.OPENAI
     ),
+    LLMModel(
+        display_name="[grok] grok-2",
+        model_name="grok-2-latest",
+        provider=ModelProvider.GROK
+    ),
 ]
 
 # Create LLM_ORDER in the format expected by the UI
@@ -85,8 +91,18 @@ def get_model_info(model_name: str) -> LLMModel | None:
     """Get model information by model_name"""
     return next((model for model in AVAILABLE_MODELS if model.model_name == model_name), None)
 
-def get_model(model_name: str, model_provider: ModelProvider) -> ChatOpenAI | ChatGroq | None:
-    if model_provider == ModelProvider.GROQ:
+def get_model(model_name: str, model_provider: ModelProvider) -> ChatOpenAI | ChatGroq | ChatAnthropic | None:
+    if model_provider == ModelProvider.GROK:
+        api_key = os.getenv("XAI_API_KEY")
+        if not api_key:
+            print(f"API Key Error: Please make sure XAI_API_KEY is set in your .env file.")
+            raise ValueError("X.AI API key not found. Please make sure XAI_API_KEY is set in your .env file.")
+        return ChatOpenAI(
+            model=model_name,
+            api_key=api_key,
+            base_url="https://api.x.ai/v1"
+        )
+    elif model_provider == ModelProvider.GROQ:
         api_key = os.getenv("GROQ_API_KEY")
         if not api_key:
             # Print error to console
