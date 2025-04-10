@@ -82,6 +82,16 @@ AVAILABLE_MODELS = [
         model_name="grok-2-latest",
         provider=ModelProvider.GROK
     ),
+    LLMModel(
+        display_name="[grok] grok-3-mini-beta",
+        model_name="grok-3-mini-beta",
+        provider=ModelProvider.GROK
+    ),
+    LLMModel(
+        display_name="[grok] grok-3-beta",
+        model_name="grok-3-beta",
+        provider=ModelProvider.GROK
+    ),
 ]
 
 # Create LLM_ORDER in the format expected by the UI

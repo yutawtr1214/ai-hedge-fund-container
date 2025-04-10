@@ -16,7 +16,10 @@
    ```bash
    # .envファイルの例
    OPENAI_API_KEY=your-openai-api-key
-   # 他のAPIキーが必要であれば追加
+   GROQ_API_KEY=your-groq-api-key
+   ANTHROPIC_API_KEY=your-anthropic-api-key
+   XAI_API_KEY=your-xai-api-key
+   FINANCIAL_DATASETS_API_KEY=your-financial-datasets-api-key
    ```
 
 2. **Docker環境の起動**
@@ -43,6 +46,10 @@
 
    # バックテスターの実行
    python src/backtester.py --ticker AAPL,MSFT,NVDA
+   
+   # 特定期間（2024年3月）のシミュレーション例
+   # 無料で使えるティッカー（AAPL,MSFT,NVDA）でのバックテスト
+   python src/backtester.py --ticker AAPL,MSFT,NVDA --start-date 2024-03-01 --end-date 2024-03-31
    ```
 
 ## オプション
@@ -52,7 +59,11 @@
 コンテナに接続せずに直接コマンドを実行することもできます。
 
 ```bash
+# ヘッジファンドの実行
 docker-compose run --rm ai-hedge-fund src/main.py --ticker AAPL,MSFT,NVDA --show-reasoning
+
+# 特定期間でのバックテスト実行
+docker-compose run --rm ai-hedge-fund src/backtester.py --ticker AAPL,MSFT,NVDA --start-date 2024-03-01 --end-date 2024-03-31
 ```
 
 ### Dockerfileのカスタマイズ
