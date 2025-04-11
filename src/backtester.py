@@ -649,8 +649,22 @@ if __name__ == "__main__":
         default=0.0,
         help="Margin ratio for short positions, e.g. 0.5 for 50% (default: 0.0)",
     )
+    parser.add_argument(
+        "--wait", 
+        type=str, 
+        default="true", 
+        help="Enable API wait/throttling to avoid rate limits (true/false)"
+    )
 
     args = parser.parse_args()
+    
+    # Set API wait setting based on command line option
+    from tools.api import API_WAIT_ENABLED
+    import builtins
+    # Convert string to boolean
+    wait_value = args.wait.lower() in ["true", "yes", "y", "1"]
+    builtins.API_WAIT_ENABLED = wait_value
+    print(f"API request throttling is {'enabled' if wait_value else 'disabled'}")
 
     # Parse tickers from comma-separated string
     tickers = [ticker.strip() for ticker in args.tickers.split(",")] if args.tickers else []

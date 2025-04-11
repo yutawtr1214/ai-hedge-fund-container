@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import requests
+import time
 
 from data.cache import get_cache
 from data.models import (
@@ -18,6 +19,11 @@ from data.models import (
 
 # Global cache instance
 _cache = get_cache()
+
+# API request delay (in seconds)
+# Default is enabled, can be toggled with --wait option
+API_WAIT_ENABLED = True
+API_WAIT_DURATION = 2  # 2000ms wait between API calls
 
 
 def get_prices(ticker: str, start_date: str, end_date: str) -> list[Price]:
@@ -97,6 +103,10 @@ def search_line_items(
     limit: int = 10,
 ) -> list[LineItem]:
     """Fetch line items from API."""
+    # Add wait time if enabled - keep this as this is where the errors occurred
+    if API_WAIT_ENABLED:
+        time.sleep(API_WAIT_DURATION)
+    
     # If not in cache or insufficient data, fetch from API
     headers = {}
     if api_key := os.environ.get("FINANCIAL_DATASETS_API_KEY"):
